@@ -1,7 +1,3 @@
-#include <iostream>
-
-using namespace std;
-
 template <class T>
 class item
 {
@@ -12,6 +8,7 @@ public:
   T data;
   item* next;
 };
+
 
 template <class T>
 class stack
@@ -53,21 +50,4 @@ int stack<T>::pop(T& result) {
 template <class T>
 bool stack<T>::empty() {
   return top == NULL;
-}
-
-
-int main()
-{
-  stack<int> a;
-  int x = 5;
-  a.push(x);
-  a.push(x + 1);
-  a.push(x + 2);
-  a.push(x + 3);
-  while (!a.empty()) {
-    a.pop(x);
-    cout << x << endl;
-  }
-
-  return 0;
 }
