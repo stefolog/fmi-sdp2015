@@ -1,3 +1,8 @@
+#include <iostream>
+
+using namespace std;
+
+
 template <class T>
 struct elem
 {
@@ -113,5 +118,3 @@ void initList(LList<int>* list) {
     list->ToEnd(x);
   }
 }
-
-
