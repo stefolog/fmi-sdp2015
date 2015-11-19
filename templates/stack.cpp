@@ -1,53 +1,150 @@
+#include <iostream>
+
+using namespace std;
+
 template <class T>
-class item
-{
-public:
-  item(T x) {
-    this->data = x;
+class stack;
+
+template <class T>
+class item {
+  friend class stack<T>;
+  private:
+  item(T x = 0) {
+    inf = x;
+    link = NULL;
   }
-  T data;
-  item* next;
+
+  T inf;
+  item* link;
 };
 
 
 template <class T>
-class stack
-{
-private:
-  item<T>* top;
-public:
-  stack<T>();
+class stack {
+  public:
+  stack(T x);
+  stack();
+  ~stack();
+  stack(stack const &);
 
-  void push(T x);
-  int pop(T& result);
-  bool empty();
+  stack<T>& operator=(stack const &);
+
+  void push(T const &);
+  int pop(T&);
+  T top() const;
+  bool empty() const;
+  void print();
+
+  private:
+  item<T>* start;
+  void delstack();
+  void copy(stack const &);
 };
+
+// Constructors & operators
+template <class T>
+stack<T>::stack(T x) {
+  start = new item<T>(x);
+}
 
 template <class T>
 stack<T>::stack() {
-  top = NULL;
+  start = NULL;
 }
 
 template <class T>
-void stack<T>::push(T x) {
-  item<T> *newTop = new item<T>(x);
-  newTop->next = top;
-  top = newTop;
+stack<T>::stack(stack const & r) {
+  copy(r);
 }
 
 template <class T>
-int stack<T>::pop(T& result) {
-  if (this->empty()) {
+stack<T>::~stack() {
+  delstack();
+}
+
+template <class T>
+stack<T>& stack<T>::operator=(stack<T> const & r)  {
+  if (this != &r) {
+    delstack();
+    copy(r);
+  }
+  return *this;
+}
+
+// Stack API
+template <class T>
+void stack<T>::push(T const & x) {
+  item<T> * i = new item<T>(x);
+  i->link = start;
+  start = i;
+}
+
+template <class T>
+int stack<T>::pop(T & x) {
+  if (!start) {
     return 0;
   }
-  result = this->top->data;
-  item<T> *oldTop = top;
-  top = top->next;
-  delete oldTop;
+
+  item<T>* temp = start;
+  start = start->link;
+
+  x = temp->inf;
+  delete temp;
+
   return 1;
 }
 
 template <class T>
-bool stack<T>::empty() {
-  return top == NULL;
+T stack<T>::top() const {
+  return start->inf;
+}
+
+template <class T>
+bool stack<T>::empty() const {
+  return start == NULL;
+}
+
+template <class T>
+void stack<T>::print() {
+  T x;
+  while (pop(x)) {
+    cout << x << " ";
+  }
+  cout << endl;
+}
+
+// Private helpers
+template <class T>
+void stack<T>::delstack() {
+  item<T> * p;
+  while (start) {
+    p = start;
+    start = start->link;
+    delete p;
+  }
+}
+
+template <class T>
+void stack<T>::copy(stack const & r) {
+  if (r.start) {
+    item<T> *p = r.start;
+    item<T> *q = NULL;
+
+    start = new item<T>;
+    start->inf = p->inf;
+    start->link = q;
+
+    q = start;
+    p = p->link;
+    while (p) {
+      q->link = new item<T>;
+      q->link->inf = p->inf;
+      q->link->link = NULL;
+
+      q = q->link;
+      p = p->link;
+    }
+  } else {
+    start = NULL;
+  }
 }

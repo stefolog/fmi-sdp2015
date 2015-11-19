@@ -11,6 +11,7 @@ int main()
   a.push(x + 1);
   a.push(x + 2);
   a.push(x + 3);
+
   while (!a.empty()) {
     a.pop(x);
     cout << x << endl;
