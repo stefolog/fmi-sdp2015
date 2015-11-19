@@ -16,7 +16,7 @@ class queue
     ~queue();
     queue(queue const &);
     queue<T>& operator=(queue const &);
-    void InsertElem(T const &);
+    void push(T const &);
     int DeleteElem(T &);
     void print();
     bool empty() const;
@@ -53,7 +53,7 @@ queue<T>& queue<T>::operator=(queue const & r) {
 }
 
 template <class T>
-void queue<T>::InsertElem(T const & x) {
+void queue<T>::push(T const & x) {
   elem_q<T> * e =  new elem_q<T>;
   e->inf = x;
   e->link = NULL;
@@ -113,9 +113,9 @@ void queue<T>::delqueue() {
 
 template <class T>
 void queue<T>::copy(queue const & r) {
-  elem_q<T> *p = r->front;
+  elem_q<T> *p = r.front;
   while(p) {
-    InsertElem(p->inf);
+    push(p->inf);
     p = p->link;
   }
 }
