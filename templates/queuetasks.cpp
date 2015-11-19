@@ -12,8 +12,8 @@ int main()
   a.InsertElem(x + 5);
   a.InsertElem(x + 10);
 
-  cout << a.DeleteElem(x) << " " << x << endl;
-  cout << a.DeleteElem(x) << " " << x << endl;
+  cout << a.pop(x) << " " << x << endl;
+  cout << a.pop(x) << " " << x << endl;
 
   a.print();
   return 0;

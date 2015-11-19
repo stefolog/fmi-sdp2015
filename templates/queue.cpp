@@ -17,7 +17,7 @@ class queue
     queue(queue const &);
     queue<T>& operator=(queue const &);
     void push(T const &);
-    int DeleteElem(T &);
+    int pop(T &);
     void print();
     bool empty() const;
 
@@ -67,7 +67,7 @@ void queue<T>::push(T const & x) {
 }
 
 template <class T>
-int queue<T>::DeleteElem(T & x) {
+int queue<T>::pop(T & x) {
   if (!rear) {
     return 0;
   }
@@ -88,7 +88,7 @@ int queue<T>::DeleteElem(T & x) {
 template <class T>
 void queue<T>::print() {
   T x;
-  while (DeleteElem(x)) {
+  while (pop(x)) {
     cout << x << " ";
   }
   cout << endl;
