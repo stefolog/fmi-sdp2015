@@ -30,7 +30,7 @@ class stack {
   stack<T>& operator=(stack const &);
 
   void push(T const &);
-  int pop(T&);
+  void pop(T&);
   T top() const;
   bool empty() const;
   void print();
@@ -80,9 +80,9 @@ void stack<T>::push(T const & x) {
 }
 
 template <class T>
-int stack<T>::pop(T & x) {
+void stack<T>::pop(T & x) {
   if (!start) {
-    return 0;
+    throw 1;
   }
 
   item<T>* temp = start;
@@ -90,8 +90,6 @@ int stack<T>::pop(T & x) {
 
   x = temp->inf;
   delete temp;
-
-  return 1;
 }
 
 template <class T>
