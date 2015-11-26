@@ -18,6 +18,7 @@ class queue
     queue<T>& operator=(queue const &);
     void push(T const &);
     int pop(T &);
+    void head(T &);
     void print();
     bool empty() const;
 
@@ -64,6 +65,15 @@ void queue<T>::push(T const & x) {
   } else {
     front = rear = e;
   }
+}
+
+template <class T>
+void queue<T>::head(T & x) {
+  if (!rear) {
+    throw 1;
+  }
+
+  x = front->inf;
 }
 
 template <class T>

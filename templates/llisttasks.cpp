@@ -39,7 +39,8 @@ void printReverseWithStack(LList<T>& list) {
   }
 
   T x;
-  while(s.pop(x)) {
+  while(!s.empty()) {
+    s.pop(x);
     cout << x << " ";
   }
   cout << endl;
@@ -119,7 +120,7 @@ void countOccurences(LList<T>& list) {
 int main(int argc, char const *argv[])
 {
   LList<int> list;
-  initList(&list);
+  // initList(list);
   // cout << "hasDuplicate: " << hasDuplicate(&list) << endl;
   print(&list);
   printReverse(&list);
