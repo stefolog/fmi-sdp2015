@@ -27,6 +27,8 @@ class LList
   int len();
   void concat(LList const&);
   void reverse();
+
+  T operator[](int idx);
  private:
   elem<T> *Start, *End, *Current;
   void DeleteList();
@@ -96,9 +98,11 @@ template <class T>
 void LList<T>::print()
 {
   IterStart();
-  while(Iter())
+  elem<T>* e = Iter();
+  while(e)
   {
-    cout << Iter()->inf << " ";
+    cout << e->inf << " ";
+    e = Iter();
   }
   cout << endl;
 }
