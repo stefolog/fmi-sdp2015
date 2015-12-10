@@ -171,10 +171,3 @@ void tree<T>::CreateTree(node<T> * & pos)const
     CreateTree(pos->Right);
 }
 
-int main()
-{
-  tree<int> x;
-  x.Create();
-  x.print();
-  return 0;
-}
