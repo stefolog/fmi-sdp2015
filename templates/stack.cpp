@@ -31,7 +31,7 @@ class stack {
 
   void push(T const &);
   void pop(T&);
-  T top() const;
+  void top(T&) const;
   bool empty() const;
   void print();
 
@@ -93,8 +93,8 @@ void stack<T>::pop(T & x) {
 }
 
 template <class T>
-T stack<T>::top() const {
-  return start->inf;
+void stack<T>::top(T& res) const {
+  res = start->inf;
 }
 
 template <class T>
@@ -105,7 +105,8 @@ bool stack<T>::empty() const {
 template <class T>
 void stack<T>::print() {
   T x;
-  while (pop(x)) {
+  while (!empty()) {
+    pop(x);
     cout << x << " ";
   }
   cout << endl;
