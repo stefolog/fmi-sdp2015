@@ -20,6 +20,7 @@ class tree
   tree& operator=(tree const&);
   bool empty()const;
   T RootTree() const;
+  node<T>* getRoot() const;
   tree LeftTree()const;
   tree RightTree()const;
   void Create3(T, tree<T>, tree<T>);
@@ -111,6 +112,12 @@ template <class T>
 T tree<T>::RootTree()const
 {
   return root->inf;
+}
+
+template <class T>
+node<T>* tree<T>::getRoot()const
+{
+  return root;
 }
 
 template <class T>
