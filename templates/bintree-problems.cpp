@@ -178,7 +178,7 @@ int calculateExpression(tree<string> t) {
   }
 }
 
-int main() {
+void problem_5() {
   tree<string> t;
   t.Create();
 
@@ -187,6 +187,124 @@ int main() {
   cout << endl << endl;
   cout << calculateExpression(t);
   cout << endl << endl;
+}
+
+/*
+6. При зададено дърво и
+получаване на операция (+ или *) и частично покриващо дърво,
+приложете опрецията върху оригиналното дърво използвайки
+най-близкия елемент на покриващото дърво като втори операнд.
+input: tree, operation, delta tree
+
+1 y 1 y 2 y 4 n n n y 3 n n y 1 y 2 n y 5 n n y 3 n n
+*
+5 y 3 n n n
+
+tree:
+         1
+        / \
+       /   \
+      1     1
+     / \   / \
+    2   3 2   3
+   /       \
+  4         5
+
+operation: *
+operands tree:
+     5
+    /
+   3
+
+Result:
+         5
+        / \
+       /   \
+      3     5
+     / \   / \
+    6   9 10  15
+   /       \
+  12        25
+*/
+
+int sum(int a, int b) {
+  return a + b;
+}
+
+int mult(int a, int b) {
+  return a * b;
+}
+
+tree<int> _applyOperation(
+  tree<int> t, int (*operation)(int, int), tree<int> operands, int lastRootValue) {
+
+  if (t.empty()) {
+    return tree<int>();
+  }
+
+  int operand;
+  tree<int> operandsLeft;
+  tree<int> operandsRight;
+
+  if (!operands.empty()) {
+    operand = operands.RootTree();
+    operandsLeft = operands.LeftTree();
+    operandsRight = operands.RightTree();
+  } else {
+    operand = lastRootValue;
+    operandsLeft = operands;
+    operandsRight = operands;
+  }
+
+  int newRoot = (*operation)(t.RootTree(), operand);
+  tree<int> left = _applyOperation(t.LeftTree(), operation, operandsLeft, operand);
+  tree<int> right = _applyOperation(t.RightTree(), operation, operandsRight, operand);
+
+  tree<int> result;
+  result.Create3(newRoot, left, right);
+  return result;
+}
+
+tree<int> applyOperation(tree<int> t, char operation, tree<int> operands) {
+  if (operands.empty()) {
+    // (0/1) | (+/*)
+  }
+
+  int (*f)(int, int);
+  if (operation == '+') {
+    f = sum;
+  } else if (operation == '*') {
+    f = mult;
+  } else {
+    throw "Operation not supported";
+  }
+
+  return _applyOperation(t, f, operands, operands.RootTree());
+}
+
+void problem_6() {
+  tree<int> t;
+  tree<int> operands;
+  char operation;
+
+  t.Create();
+  cout << endl << endl << endl;
+  cout << "Operation: ";
+  cin >> operation;
+  operands.Create();
+
+  t = applyOperation(t, operation, operands);
+
+  cout << endl << endl << endl;
+  cout << "Result: ";
+  t.print();
+}
+
+int main() {
+  // problem_3();
+  // problem_5();
+  problem_6();
+
 
   return 0;
 }
