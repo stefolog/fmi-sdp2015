@@ -3,6 +3,7 @@
 
 using namespace std;
 
+// Returns '\0' for not found
 char atIdx(LList<char> list, int i) {
   list.IterStart();
   elem<char> *c;
@@ -15,20 +16,22 @@ char atIdx(LList<char> list, int i) {
   return c->inf;
 }
 
-// '\0'
-char atIdx(LList<LList<char> > list, int i, int j) {
+// Returns '\0' for not found
+char atIdx(LList<LList<char> > list, int row, int col) {
   list.IterStart();
   elem<LList<char> > *curr;
-  for (int a = 0; a <= i; a++) {
+  for (int i = 0; i <= col; i++) {
     curr = list.Iter();
     if (curr == NULL) {
       return '\0';
     }
   }
 
-  return atIdx(curr->inf, j);
+  return atIdx(curr->inf, row);
 }
 /*
+Sample Input:
+
 6
 alabala.
 alibaba.
@@ -36,11 +39,15 @@ lala.
 alibali.
 liaa.
 kak.
+ailiak
+
 */
 int main() {
   LList<LList<char> > list;
   int n;
+  cout << "Number of words: ";
   cin >> n;
+  cout << "Enter that many words with . for end:" << endl;
   while (n > 0) {
     LList<char> sublist;
     while (true) {
@@ -56,41 +63,37 @@ int main() {
   }
 
   cout << endl << endl << endl;
-  cout << "XXXX: " ;
+  cout << "Search for word: " ;
 
   char word[50];
   cin.ignore();
   cin.getline(word, 50);
-  cout << "[" << word << "]" << endl;
 
   int wl = strlen(word);
   int ll = list.len();
 
-  for (int i = 0; i <= ll - wl; i++) {
-    for (int j = 0; true; j++) {
-      char c = atIdx(list, j, i);
+  for (int col = 0; col <= ll - wl; col++) {
+    for (int row = 0; true; row++) {
+      char c = atIdx(list, row, col);
       if (c == '\0') {
         break;
       }
 
       bool found = true;
       for (int k = 0; k < wl; k++) {
-        cout << atIdx(list, j, i+k) << ",";
-        if (atIdx(list, j, i+k) != word[k]) {
+        if (atIdx(list, row, col+k) != word[k]) {
           found = false;
           break;
         }
       }
+
       if (found) {
-        cout << "[i, j]: " << "[" << j << ", " << i << "]" << endl;
+        cout << "Found at [row, col]: " << "[" << row << ", " << col << "]" << endl;
+        break;
       }
     }
   }
 
-  cout << "resutl:";
-  cout << atIdx(list, 0, 0);
   cout << endl;
-
-
   return 0;
 }
