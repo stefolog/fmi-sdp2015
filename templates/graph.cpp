@@ -178,20 +178,5 @@ void graph<T>::print()
 	cout << endl;
 }
 
-int main() {
-	graph<int> g;
-	g.addTop(5);
-	g.addTop(6);
-	g.addTop(11);
-	g.addRib(5, 6);
-	g.addRib(6, 11);
-	cout << g.top(11) << endl;
-	cout << g.top(12) << endl;
-	cout << g.rib(5, 11) << endl;
-	cout << g.rib(5, 6) << endl;
-	cout << g.rib(5, 8) << endl;
-	cout <<
-	return 0;
-}
 
 #endif // !GRAPH_H_INCLUDED
