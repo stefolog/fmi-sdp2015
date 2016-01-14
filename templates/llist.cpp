@@ -1,3 +1,6 @@
+#ifndef LLIST_H_INCLUDED
+#define LLIST_H_INCLUDED
+
 #include <iostream>
 
 using namespace std;
@@ -250,3 +253,5 @@ void LList<T>::reverse()
   }
   *this = l;
 }
+
+#endif // !LLIST_H_INCLUDED

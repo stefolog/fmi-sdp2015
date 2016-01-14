@@ -1,3 +1,6 @@
+#ifndef TREE_H_INCLUDED
+#define TREE_H_INCLUDED
+
 #include <iostream>
 
 using namespace std;
@@ -178,3 +181,4 @@ void tree<T>::CreateTree(node<T> * & pos)const
     CreateTree(pos->Right);
 }
 
+#endif // !TREE_H_INCLUDED
