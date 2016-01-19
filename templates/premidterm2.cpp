@@ -2,6 +2,7 @@
 #include "graph.cpp"
 #include "llist.cpp"
 #include "tree.cpp"
+#include "person.cpp"
 
 /*
 1. Списък (int)
@@ -50,6 +51,48 @@
 
 */
 
+int applyOperation(char op, int a, int b) {
+  switch (op) {
+    case '*':
+      return a * b;
+    case '+':
+      return a + b;
+    case '/':
+      return b != 0 ? a / b : 0;
+    case '-':
+      return a - b;
+    default:
+      return 0;
+  }
+}
+
+int problem_2b(tree<int> & t, tree<char> & opt, int distanceToRoot, int & h) {
+  if (t.empty()) {
+    h = 0;
+    return 0;
+  }
+
+  int hLeft = 0, hRight = 0;
+
+  tree<int> leftTree = t.LeftTree();
+  tree<int> rightTree = t.RightTree();
+
+  tree<char> leftOpTree = opt.LeftTree();
+  tree<char> rightOpTree = opt.RightTree();
+
+  int sumLeft = problem_2b(leftTree, leftOpTree, distanceToRoot + 1, hLeft);
+  int sumRight = problem_2b(rightTree, rightOpTree, distanceToRoot +1, hRight);
+
+  h = 1 + max(hLeft, hRight);
+
+  int sum = 0;
+  if (h % 2 == 1) {
+    sum = applyOperation(opt.RootTree(), t.RootTree(),distanceToRoot);
+  }
+
+  return sum + sumLeft + sumRight;
+}
+
 int problem_2a(tree<int> & t, int & h) {
   if (t.empty()) {
     h = 0;
@@ -57,17 +100,37 @@ int problem_2a(tree<int> & t, int & h) {
   }
 
   int hLeft = 0, hRight = 0;
-  int sumLeft = problem_2a(t, hLeft);
-  int sumRight = problem_2a(t, hRight);
+  tree<int> leftTree = t.LeftTree();
+  tree<int> rightTree = t.RightTree();
+  int sumLeft = problem_2a(leftTree, hLeft);
+  int sumRight = problem_2a(rightTree, hRight);
 
   h = 1 + max(hLeft, hRight);
   if (h % 2 == 1) {
-    return t.GetRoot() + sumLeft + sumRight;
+    return t.RootTree() + sumLeft + sumRight;
   } else {
     return sumLeft + sumRight;
   }
 }
 
+void problem2() {
+  int h;
+
+  tree<int> t;
+  t.Create();
+
+  tree<char> opt;
+  opt.Create();
+  cout << "Result:" << problem_2a(t, h) << endl;
+  // 7y5y6y3nny1nny4nnn expected: 13
+
+  cout << "Result:" << problem_2b(t, opt, 0, h) << endl;
+  // 7y5y6y3nny1nny4nnn
+  // *y-y+y/nny*nny-nnn expected: 10
+}
+
 int main() {
+  Person p("Pesho", 24, LList<string>());
+  cout << p << endl;
   return 0;
 }
