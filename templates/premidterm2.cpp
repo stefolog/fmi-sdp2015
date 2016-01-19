@@ -1,5 +1,6 @@
 #include <iostream>
 #include "stack.cpp"
+#include "queue.cpp"
 #include "graph.cpp"
 #include "llist.cpp"
 #include "tree.cpp"
@@ -285,9 +286,32 @@ void problem_3() {
   cout << "Result: " << hasPath(g, pesho, dragan, visited) << endl;
 }
 
-int main() {
-  // problem_3();
+// Задача 10.
+// Нека са дадени дърво и опашка. Да се дефинира функцията
+// bool levelCheck (дърво t, опашка q, int level),
+// която проверява дали всички елементи от опашката q могат да бъдат прочетени от дясно на ляво в нивото level на дървото t, в реда, в който са достъпни от опашката.
 
+bool _zad10(tree<int> t, queue<int>& q, int level) {
+  if (level == 0) {
+    if (t.empty()) {
+      return true;
+    }
+    int x;
+    q.pop(x);
+    return (t.RootTree() == x);
+  }
+
+  return _zad10(t.RightTree(), q, level - 1) && _zad10(t.LeftTree(), q, level - 1);
+}
+
+bool zad10(tree<int> t, queue<int>& q, int level) {
+  if (_zad10(t, q, level)) {
+    return q.empty();
+  }
+  return false;
+}
+
+void zad4() {
 // t1: 7y5y6y3nny1nny4nnn
 // t2: 1y3y5nnny6y5y1nny7nny3nn
   tree<int> t1;
@@ -296,5 +320,81 @@ int main() {
   t2.Create();
   stack<int> path;
   hasMirroredPath(t1, t2, path);
+}
+
+void zad10_test() {
+  tree<int> t1;
+  // 1y3y5nnny6y5y1nny7nny3nn
+  t1.Create();
+  queue<int> q;
+  q.push(3);
+  q.push(5);
+  q.push(5);
+
+  cout << "Result: " << zad10(t1, q, 2) << endl;
+}
+
+string concatenateLevel(tree<string> t, int level) {
+  if (level == 0) {
+    if (t.empty()) {
+      return string();
+    }
+    return t.RootTree();
+  }
+
+  if (t.empty()) {
+    return string();
+  }
+
+  string leftString = concatenateLevel(t.LeftTree(), level - 1);
+  string rightString = concatenateLevel(t.RightTree(), level - 1);
+
+  return leftString + rightString;
+}
+/*
+alabalanitsa
+y
+alabala
+y
+ala
+n
+n
+y
+bala
+n
+n
+y
+nitsa
+n
+y
+nitsaa
+n
+n
+*/
+bool zad9(tree<string> t) {
+  if (t.empty()) {
+    return true;
+  }
+  string compareWith = t.RootTree();
+  int level = 1;
+  while (true) {
+    string levelStr = concatenateLevel(t, level);
+    if (levelStr.empty()) {
+      return true;
+    }
+    if (levelStr != compareWith) {
+      return false;
+    }
+    level++;
+  }
+}
+
+void zad9_test() {
+  tree<string> s;
+  s.Create();
+  cout << "Result: " << zad9(s) << endl;
+}
+
+int main() {
   return 0;
 }
