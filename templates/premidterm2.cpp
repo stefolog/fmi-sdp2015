@@ -129,8 +129,96 @@ void problem2() {
   // *y-y+y/nny*nny-nnn expected: 10
 }
 
+template<class T>
+LList<T> neighbours(graph<T> g, T e) {
+  if (!g.top(e)) {
+    return LList<T>();
+  }
+
+  elem<T> * glist = g.point(e);
+  LList<T> neighbours;
+  while (glist->link != NULL) {
+    neighbours.ToEnd(glist->link->inf);
+    glist = glist->link;
+  }
+  return neighbours;
+}
+
+bool contains(LList<Person> & list, Person x) {
+  list.IterStart();
+  elem<Person> * e = list.Iter();
+  while (e) {
+    if (e->inf == x) {
+      return true;
+    }
+    e = list.Iter();
+  }
+  return false;
+}
+
+bool hasPath(graph<Person> g, Person& from, Person& to, LList<Person>& visited) {
+  if (from == to) {
+    return true;
+  }
+
+  if (contains(visited, from)) {
+    return false;
+  }
+
+  visited.ToEnd(from);
+
+  LList<Person> friends = neighbours(g, from);
+  friends.IterStart();
+  elem<Person> * fr = friends.Iter();
+  while (fr) {
+    Person aFriend = fr->inf;
+    if (aFriend.age == from.age) {
+      if (hasPath(g, aFriend, to, visited)) {
+        cout << aFriend << " <- ";
+        return true;
+      }
+    }
+    fr = friends.Iter();
+  }
+
+  return false;
+}
+
+void problem_3() {
+  graph<Person> g;
+
+  Person pesho("Pesho", 20, LList<string>());
+  Person ivan("Ivan", 20, LList<string>());
+  Person petkan("Petkan", 20, LList<string>());
+  Person mimi("Mimi", 20, LList<string>());
+  Person mariika("Mariika", 20, LList<string>());
+  Person pepa("Pepa", 20, LList<string>());
+  Person dragan("Dragan", 20, LList<string>());
+
+  g.addTop(pesho);
+  g.addTop(ivan);
+  g.addTop(petkan);
+  g.addTop(mimi);
+  g.addTop(mariika);
+  g.addTop(pepa);
+  g.addTop(dragan);
+
+  g.addRib(pesho, ivan);
+  g.addRib(pesho, petkan);
+  g.addRib(pesho, mimi);
+  g.addRib(pesho, mariika);
+
+  g.addRib(petkan, mimi);
+  g.addRib(petkan, mariika);
+  g.addRib(petkan, pepa);
+  g.addRib(mimi, dragan);
+
+
+  LList<Person> visited;
+  cout << "Result: " << hasPath(g, pesho, dragan, visited) << endl;
+}
+
 int main() {
-  Person p("Pesho", 24, LList<string>());
-  cout << p << endl;
+  problem_3();
   return 0;
 }
