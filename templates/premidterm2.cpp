@@ -1,4 +1,5 @@
 #include <iostream>
+#include "stack.cpp"
 #include "graph.cpp"
 #include "llist.cpp"
 #include "tree.cpp"
@@ -45,11 +46,77 @@
   и втори операнд - отдалечеността от върха на дървото
 (3 / 3) + (1 * 3) + (5 - 1) + (4 - 2)
 
+  в)
+
 3. Граф (Person)
   Дали мога да се запозная с Човек X, през приятели на същата възраст.
   Аз и Човек X сме на една и съща възраст.
 
+4.
+Път в дадено двоично дърво наричаме последователност от възли от корен до листо на дървото.
+Казваме, че един списък е огледален образ на друг, ако вторият списък съдържа елементите на първия в обратен ред.
+Да се напише функция, която по дадени две двоични дървета намира път в първото дърво, който е огледален образ на някой път във второто дърво.
+
+       7
+      /
+     5
+    / \
+   6   4
+  / \
+ 3   1
+
+     1
+    / \
+   3   6
+  /   / \
+ 5   5   3
+    / \
+   1   7
+
+7->5->4, 4->5->7
+7->5->6->1, 1->6->5->7 *
+7->5->6->3, 3->6->5->7
 */
+
+bool hasPath(tree<int> t, stack<int> path) {
+  if (path.empty() && t.empty()) {
+    return true;
+  }
+
+  if (path.empty() || t.empty()) {
+    return false;
+  }
+
+  int x;
+  path.pop(x);
+  if (x == t.RootTree()) {
+    return hasPath(t.LeftTree(), path) || hasPath(t.RightTree(), path);
+  } else {
+    return false;
+  }
+}
+
+bool hasMirroredPath(tree<int> t1, tree<int> t2, stack<int> currentPath) {
+  if (t1.empty()) {
+    return false;
+  }
+
+  currentPath.push(t1.RootTree());
+
+  // is Leaf
+  if (t1.LeftTree().empty() && t1.RightTree().empty()) {
+    if (hasPath(t2, currentPath)) {
+      currentPath.print();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  return
+      hasMirroredPath(t1.LeftTree(), t2, currentPath) ||
+      hasMirroredPath(t1.RightTree(), t2, currentPath);
+}
 
 int applyOperation(char op, int a, int b) {
   switch (op) {
@@ -219,6 +286,15 @@ void problem_3() {
 }
 
 int main() {
-  problem_3();
+  // problem_3();
+
+// t1: 7y5y6y3nny1nny4nnn
+// t2: 1y3y5nnny6y5y1nny7nny3nn
+  tree<int> t1;
+  t1.Create();
+  tree<int> t2;
+  t2.Create();
+  stack<int> path;
+  hasMirroredPath(t1, t2, path);
   return 0;
 }
