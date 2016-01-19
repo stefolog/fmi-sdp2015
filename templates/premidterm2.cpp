@@ -395,6 +395,61 @@ void zad9_test() {
   cout << "Result: " << zad9(s) << endl;
 }
 
+bool hasCycle(graph<Person>& g) {
+  LList<Person> vertexes = g.vertexes();
+  vertexes.IterStart();
+  elem<Person> * e = vertexes.Iter();
+  while (e) {
+    LList<Person> visited;
+    LList<Person> neighboursList = neighbours(g, e->inf);
+    neighboursList.IterStart();
+    elem<Person> * n = neighboursList.Iter();
+    while (n) {
+      if (hasPath(g, n->inf, e->inf, visited)) {
+        return true;
+      }
+      n = neighboursList.Iter();
+    }
+    e = vertexes.Iter();
+  }
+  return false;
+}
+
+void hasCycle_test() {
+  graph<Person> g;
+
+  Person pesho("Pesho", 20, LList<string>());
+  Person ivan("Ivan", 20, LList<string>());
+  Person petkan("Petkan", 20, LList<string>());
+  Person mimi("Mimi", 20, LList<string>());
+  Person mariika("Mariika", 20, LList<string>());
+  Person pepa("Pepa", 20, LList<string>());
+  Person dragan("Dragan", 20, LList<string>());
+
+  g.addTop(pesho);
+  g.addTop(ivan);
+  g.addTop(petkan);
+  g.addTop(mimi);
+  g.addTop(mariika);
+  g.addTop(pepa);
+  g.addTop(dragan);
+
+  g.addRib(pesho, ivan);
+  g.addRib(pesho, petkan);
+  g.addRib(pesho, mimi);
+  g.addRib(pesho, mariika);
+
+  g.addRib(petkan, mimi);
+  g.addRib(petkan, mariika);
+  g.addRib(petkan, pepa);
+  g.addRib(mimi, dragan);
+
+  g.addRib(dragan, pesho);  // pesho->petkan->mimi->dragan->pesho
+                            // pesho->mimi->dragan->pesho
+  cout << "Result:: " << hasCycle(g) << endl;
+}
+
 int main() {
+  hasCycle_test();
   return 0;
 }
